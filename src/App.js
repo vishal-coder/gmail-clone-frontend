@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Compose from "./components/Compose.js";
+import GoogleLogin from "./components/GoogleLogin.js";
+import Header from "./components/Header.js";
+import LeftSideBar from "./components/LeftSideBar.js";
+import MainBody from "./components/MainBody.js";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+import Dashboard from "./components/Dashboard.js";
+// import Dashboard from " ./components/Dashboard.js";
+// import Dashboard from " .";
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {true ? (
+        <GoogleLogin />
+      ) : (
+        <>
+          {/* <Header />
+          <div className="mainDashBoard">
+            <LeftSideBar />
+            <MainBody />
+          </div>
+          <Compose /> */}
+        </>
+      )}
+      <Routes>
+        <Route exact path="/" element={<GoogleLogin />} />
+        <Route exact path="/loggedindashboard" element={<Dashboard />} />
+      </Routes>
     </div>
   );
 }

@@ -1,0 +1,69 @@
+:root {
+  --bg-primary: #f5f5f5;
+  --hover-primary: #dedcdc;
+  --color-primary: #5f6368;
+  --bg-lightBlue: #d3e3fd;
+}
+
+.leftsidebarwrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.componsebtnDiv {
+  border-radius: 20px;
+  margin: 10px;
+  text-align: left;
+}
+.componsebtn {
+  border-radius: 17px !important;
+  background-color: #c2e7ff !important;
+  color: black !important;
+  margin: 10px !important;
+  padding: 1rem !important;
+  /* text-transform: capitalize; */
+}
+
+.componsebtnDiv span {
+  /* padding: 2rem; */
+}
+
+.componsebtn:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+}
+
+.labellistitem {
+  display: flex;
+  /* justify-content: space-between; */
+  height: 2rem;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  padding-right: 10px;
+  padding-left: 25px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  align-items: center;
+  color: var(--color-primary);
+  gap: 1rem;
+  margin-right: 1rem;
+  font-style: normal;
+}
+
+.labellistitem:hover {
+  background-color: var(--hover-primary);
+  cursor: pointer;
+}
+
+.labellistitem p {
+  flex: 1;
+  text-align: left;
+}
+
+.sidebarIcon {
+  font-size: 10px;
+}
+
+.listitem-active {
+  background-color: var(--bg-lightBlue);
+  font-weight: bold;
+}

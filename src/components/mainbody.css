@@ -1,0 +1,89 @@
+:root {
+  --bg-primary: #f5f5f5;
+  --hover-primary: #dedcdc;
+  --color-primary: #5f6368;
+  --bg-lightBlue: #d3e3fd;
+}
+.emailsetting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 3rem;
+  padding-left: 1rem;
+  flex: 1;
+}
+
+.emailtype {
+  padding-left: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  cursor: pointer;
+  align-content: center;
+  color: var(--color-primary);
+  height: 3rem;
+  align-items: center;
+  flex: 1;
+}
+
+.emailtypeitem {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  min-width: 20%;
+  align-items: center;
+}
+.emailtypeitem svg {
+  font-size: 20px;
+  padding-left: 1rem;
+}
+.emailtypeitem:hover {
+  background-color: var(--hover-primary);
+}
+.emaillistwrapper {
+  flex: 3;
+}
+.emaillist {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 1rem;
+  color: var(--color-primary);
+  font-size: medium;
+  /* overflow-y: auto; */
+  height: 70%;
+  /* overflow-x: auto; */
+}
+
+.emailitem {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  background-color: var(--bg-primary);
+  padding-right: 1rem;
+  border-bottom: 1px solid var(--hover-primary);
+  /* --bg-primary: #f6f8fc; */
+}
+.emailitem:hover {
+  box-shadow: 5px 0 11px rgba(23, 20, 20, 0.4);
+  /* box-shadow: inset 0 -1px 0 0 rgb(100 121 143 / 12%); */
+}
+
+.emailitem .emailSender {
+  flex: 2;
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.emailitem .emailBody {
+  flex: 4;
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
