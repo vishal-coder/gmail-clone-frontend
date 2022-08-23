@@ -36,18 +36,8 @@ function LeftSideBar() {
     getLables();
   }, []);
 
-  const data = [
-    { Icon: InboxIcon, label: "Inbox", number: 0, isActive: true },
-    { Icon: StarBorderIcon, label: "Starred", number: null },
-    { Icon: AccessTimeIcon, label: "Snoozed", number: null },
-    { Icon: SendIcon, label: "Sent", number: null },
-    { Icon: TaskOutlinedIcon, label: "Drafts", number: null },
-    { Icon: LabelImportantOutlinedIcon, label: "Important", number: null },
-    { Icon: ChatOutlinedIcon, label: "Chats", number: null },
-    { Icon: ScheduleSendOutlinedIcon, label: "Scheduled", number: null },
-    { Icon: EmailOutlinedIcon, label: "All Mail", number: null },
-    { Icon: ReportOutlinedIcon, label: "Spam", number: null },
-  ];
+  const [active, setActive] = useState("INBOX");
+  console.log("acive is", active);
   return (
     <div className="leftsidebarwrapper">
       <div className="componsebtnDiv">
@@ -66,9 +56,20 @@ function LeftSideBar() {
       <div>
         {!loading ? (
           <>
-            {labelList.map((labelData) => (
-              <LabelList key={labelData.id} labelData={labelData} />
-            ))}
+            <div className="labelListWrapper ">
+              {labelList.map((labelData) => (
+                <div
+                  className={`labellistitem ${
+                    active == labelData.id && "active"
+                  }`}
+                  onClick={() => {
+                    setActive(labelData.id);
+                  }}
+                >
+                  <LabelList key={labelData.id} labelData={labelData} />
+                </div>
+              ))}
+            </div>
           </>
         ) : (
           <></>
