@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./leftsidebar.css";
 import Button from "@mui/material/Button";
 import CreateIcon from "@mui/icons-material/Create";
@@ -13,8 +13,23 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import ScheduleSendOutlinedIcon from "@mui/icons-material/ScheduleSendOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
+import { useDispatch, useSelector } from "react-redux";
+import { openComposeModal } from "../features/composeMailSlice";
+import { getLabelList } from "../services/LabelService.js";
 
 function LeftSideBar() {
+  const dispatch = useDispatch();
+  const { userToken } = useSelector((state) => state.user);
+  const [labelList, setLabelList] = useState(null);
+  useEffect(() => {
+    const getLables = async () => {
+      //const data = await getUserProfile(token);
+      const labelsList = await getLabelList(userToken);
+      console.log("labelList,labelsList", labelsList);
+    };
+    getLables();
+  }, []);
+
   const data = [
     { Icon: InboxIcon, label: "Inbox", number: 0, isActive: true },
     { Icon: StarBorderIcon, label: "Starred", number: null },
@@ -35,6 +50,9 @@ function LeftSideBar() {
           variant="contained"
           size="large"
           startIcon={<CreateIcon fontSize="large" />}
+          onClick={() => {
+            dispatch(openComposeModal());
+          }}
         >
           <span>Compose</span>
         </Button>

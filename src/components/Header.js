@@ -16,13 +16,21 @@ import SearchIcon from "@mui/icons-material/Search";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import InputBase from "@mui/material/InputBase";
 import { getUserProfile } from "../services/ProfileService.js";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserProfile, setIsLoggedIn } from "../features/user/userSlice.js";
 function Header() {
+  // const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("token in header is ", token);
+    // console.log("token in header is ", token);
     const getProfile = async () => {
-      const profile = await getUserProfile(token);
-      console.log("profile in header is", profile);
+      const data = await getUserProfile(token);
+      dispatch(setUserProfile(data.profile));
+      dispatch(setIsLoggedIn(true));
+
+      console.log("profile in header is", data);
     };
     getProfile();
   }, []);

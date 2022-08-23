@@ -14,24 +14,27 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Dashboard from "./components/Dashboard.js";
+import { useDispatch, useSelector } from "react-redux";
 // import Dashboard from " ./components/Dashboard.js";
 // import Dashboard from " .";
 
 function App() {
+  const { isLoggedIn } = useSelector((state) => state.user);
+
   return (
     <div className="App">
-      {true ? (
-        <GoogleLogin />
-      ) : (
-        <>
-          {/* <Header />
+      {/* {!isLoggedIn ? ( */}
+      {/* <GoogleLogin /> */}
+      {/* ) : ( */}
+      <>
+        {/* <Header />
           <div className="mainDashBoard">
             <LeftSideBar />
             <MainBody />
           </div>
           <Compose /> */}
-        </>
-      )}
+      </>
+      {/* )} */}
       <Routes>
         <Route exact path="/" element={<GoogleLogin />} />
         <Route exact path="/loggedindashboard" element={<Dashboard />} />

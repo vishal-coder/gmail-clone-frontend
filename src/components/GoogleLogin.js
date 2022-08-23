@@ -1,19 +1,24 @@
 import React, { useEffect } from "react";
 import "./login.css";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { setUserToken } from "../features/user/userSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 function GoogleLogin() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const token = searchParams.get("token");
-    console.log("token in google login is", token);
+    // console.log("token in google login is", token);
 
     if (token) {
       // alert("google login");
       localStorage.setItem("token", token);
-      localStorage.setItem("loggedin", true);
+      dispatch(setUserToken(token));
       navigate("/loggedindashboard");
+      // navigate("/");
     }
   }, []);
   const createGoogleAuthLink = async () => {

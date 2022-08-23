@@ -13,8 +13,12 @@ import TagFacesOutlinedIcon from "@mui/icons-material/TagFacesOutlined";
 import AddToDriveOutlinedIcon from "@mui/icons-material/AddToDriveOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { useDispatch } from "react-redux";
+import { closeComposeModal } from "../features/composeMailSlice";
 
 function Compose() {
+  const dispatch = useDispatch();
+
   return (
     <div className="composemailwrapper">
       <div className="composeheader">
@@ -29,7 +33,11 @@ function Compose() {
           </div>
           <div>
             {" "}
-            <CloseOutlinedIcon />
+            <CloseOutlinedIcon
+              onClick={() => {
+                dispatch(closeComposeModal());
+              }}
+            />
           </div>
         </div>
       </div>

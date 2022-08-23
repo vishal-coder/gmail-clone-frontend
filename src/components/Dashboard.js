@@ -3,8 +3,12 @@ import Compose from "./Compose.js";
 import Header from "./Header.js";
 import LeftSideBar from "./LeftSideBar.js";
 import MainBody from "./MainBody.js";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
+  const { isOpen } = useSelector((state) => state.composeModal);
+  console.log("is open in dashboard", isOpen);
+
   useEffect(() => {
     console.log("onload request made");
   }, []);
@@ -15,7 +19,7 @@ function Dashboard() {
         <LeftSideBar />
         <MainBody />
       </div>
-      <Compose />
+      {isOpen && <Compose />}
     </>
   );
 }
