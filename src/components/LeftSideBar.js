@@ -19,13 +19,19 @@ import { getLabelList } from "../services/LabelService.js";
 
 function LeftSideBar() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const { userToken } = useSelector((state) => state.user);
   const [labelList, setLabelList] = useState(null);
   useEffect(() => {
     const getLables = async () => {
       //const data = await getUserProfile(token);
-      const labelsList = await getLabelList(userToken);
-      console.log("labelList,labelsList", labelsList);
+      const response = await getLabelList(userToken);
+      console.log("labelList,labelsList--", response);
+      console.log("labelList,labelsList--", response.data);
+      setLabelList(response.data);
+      setLoading(false);
+      console.log("labelList,labelsList--", response);
+      console.log("loading--", loading);
     };
     getLables();
   }, []);
@@ -58,9 +64,15 @@ function LeftSideBar() {
         </Button>
       </div>
       <div>
-        {data.map((labelData) => (
-          <LabelList labelData={labelData} />
-        ))}
+        {!loading ? (
+          <>
+            {labelList.map((labelData) => (
+              <LabelList key={labelData.id} labelData={labelData} />
+            ))}
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
