@@ -24,3 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 App copy.js
 App copy 2.js
+rootReducer.js

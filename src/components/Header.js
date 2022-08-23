@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
+
 import "./header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -9,7 +11,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import SearchIcon from "@mui/icons-material/Search";
@@ -17,15 +18,33 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import InputBase from "@mui/material/InputBase";
 import { getUserProfile } from "../services/ProfileService.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserProfile, setIsLoggedIn } from "../features/user/userSlice.js";
+import {
+  setUserProfile,
+  setIsLoggedIn,
+  LOG_OUT,
+} from "../features/user/userSlice.js";
 import Tooltip from "@mui/material/Tooltip";
+import { Avatar, Menu, MenuItem } from "@mui/material";
+import { logoutUser } from "../services/LogoutService";
 function Header() {
   const { userInfo } = useSelector((state) => state.user);
-
-  console.log(" userInfo userInfo in header is ", userInfo);
-
-  useEffect(() => {}, []);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    alert("clicked");
+    dispatch(LOG_OUT());
+    const token = localStorage.getItem("token");
+    const response = await logoutUser(token);
+    console.log(response);
+    if (response.success) {
+      dispatch(LOG_OUT);
+      localStorage.removeItem("token");
+      navigate("/");
+    } else {
+      alert("Please try again later");
+    }
+  };
   return (
     <div className="headerwrapper">
       <div className="left-header">
@@ -90,13 +109,36 @@ function Header() {
             <AppsIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title={userInfo.name ? userInfo.name : userInfo.email}>
+        <Tooltip title={userInfo && userInfo.name ? userInfo.name : userInfo}>
           <Avatar
-            alt={userInfo.name ? userInfo.name : userInfo.email}
+            alt={userInfo && userInfo.name ? userInfo.name : userInfo}
             // src="https://lh3.googleusercontent.com/a-/AFdZucoT3CTGv5f5g9JSEqCAPiEJ_P8N4CEa-KGYhTxw=s96-c"
-            src={userInfo.picture ? userInfo.picture : userInfo.name}
+            src={
+              userInfo && userInfo.picture ? userInfo.picture : userInfo.picture
+            }
+            onClick={() => setOpen(true)}
+            sx={{ cursor: "pointer" }}
           />
         </Tooltip>
+        <Menu
+          sx={{ marginTop: "2rem" }}
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          anchorEl={true}
+          open={open}
+          onClose={() => setOpen(false)}
+          placement="bottom-start"
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+        </Menu>
       </div>
     </div>
   );

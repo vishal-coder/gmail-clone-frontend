@@ -24,11 +24,17 @@ export const userSlice = createSlice({
       // console.log("called set setUserToken", action);
       state.userToken = action.payload;
     },
+
+    LOG_OUT: (state) => {
+      console.log("called set LOG_OUT", state);
+      state = undefined;
+      console.log("called set LOG_OUT", state);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setUserProfile, setIsLoggedIn, setUserToken } =
+export const { setUserProfile, setIsLoggedIn, setUserToken, LOG_OUT } =
   userSlice.actions;
 
 export default userSlice.reducer;
