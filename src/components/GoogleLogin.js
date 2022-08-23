@@ -3,6 +3,8 @@ import "./login.css";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { setUserToken } from "../features/user/userSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { setUserProfile, setIsLoggedIn } from "../features/user/userSlice.js";
+import { getUserProfile } from "../services/ProfileService.js";
 
 function GoogleLogin() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,7 +19,17 @@ function GoogleLogin() {
       // alert("google login");
       localStorage.setItem("token", token);
       dispatch(setUserToken(token));
-      navigate("/loggedindashboard");
+
+      const getProfile = async () => {
+        const token = localStorage.getItem("token");
+
+        const data = await getUserProfile(token);
+        console.log("profile in GoogleLogin is-", data);
+        dispatch(setUserProfile(data.data));
+        dispatch(setIsLoggedIn(true));
+        navigate("/loggedindashboard");
+      };
+      getProfile();
       // navigate("/");
     }
   }, []);

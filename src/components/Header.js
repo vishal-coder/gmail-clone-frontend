@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -18,22 +18,14 @@ import InputBase from "@mui/material/InputBase";
 import { getUserProfile } from "../services/ProfileService.js";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserProfile, setIsLoggedIn } from "../features/user/userSlice.js";
+import Tooltip from "@mui/material/Tooltip";
 function Header() {
-  // const { userInfo } = useSelector((state) => state.user);
+  const { userInfo } = useSelector((state) => state.user);
+
+  console.log(" userInfo userInfo in header is ", userInfo);
+
+  useEffect(() => {}, []);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    // console.log("token in header is ", token);
-    const getProfile = async () => {
-      const data = await getUserProfile(token);
-      dispatch(setUserProfile(data.profile));
-      dispatch(setIsLoggedIn(true));
-
-      console.log("profile in header is", data);
-    };
-    getProfile();
-  }, []);
   return (
     <div className="headerwrapper">
       <div className="left-header">
@@ -45,10 +37,12 @@ function Header() {
         </div> */}
         <div>
           {" "}
-          <img
-            src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r4.png"
-            alt="Gmail Icon"
-          />
+          <Tooltip title="Gmail">
+            <img
+              src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r4.png"
+              alt="Gmail Icon"
+            />
+          </Tooltip>
         </div>
       </div>
       <div className="searchDiv">
@@ -63,32 +57,46 @@ function Header() {
           placeholder="Search in emails"
         /> */}
         {/* </InputGroup> */}
-        <IconButton
-          sx={{ p: "10px", backgroundColor: "#eef3fc;" }}
-          aria-label="menu"
-        >
-          <SearchIcon />
-        </IconButton>
-        <InputBase
-          className="searchInput"
-          sx={{ ml: 1, flex: 0.7, backgroundColor: "white" }}
-          placeholder="Search in emails"
-          inputProps={{ "aria-label": "search google maps" }}
-        />
+        <Tooltip title="Search">
+          <IconButton
+            sx={{ p: "10px", backgroundColor: "#eef3fc;" }}
+            aria-label="menu"
+          >
+            <SearchIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Enter text to search">
+          <InputBase
+            className="searchInput"
+            sx={{ ml: 1, flex: 0.7, backgroundColor: "white" }}
+            placeholder="Search in emails"
+            inputProps={{ "aria-label": "search google maps" }}
+          />
+        </Tooltip>
       </div>
       <div className="profileHeaderDiv">
-        <IconButton aria-label="Search">
-          <HelpOutlineIcon />
-        </IconButton>
-
-        <IconButton aria-label="Search">
-          <SettingsIcon />
-        </IconButton>
-        <IconButton aria-label="Search">
-          <AppsIcon />
-        </IconButton>
-
-        <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+        <Tooltip title="Support">
+          <IconButton aria-label="Support">
+            <HelpOutlineIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Setting">
+          <IconButton aria-label="Setting">
+            <SettingsIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Google Apps">
+          <IconButton aria-label="Google Apps">
+            <AppsIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title={userInfo.name ? userInfo.name : userInfo.email}>
+          <Avatar
+            alt={userInfo.name ? userInfo.name : userInfo.email}
+            // src="https://lh3.googleusercontent.com/a-/AFdZucoT3CTGv5f5g9JSEqCAPiEJ_P8N4CEa-KGYhTxw=s96-c"
+            src={userInfo.picture ? userInfo.picture : userInfo.name}
+          />
+        </Tooltip>
       </div>
     </div>
   );
