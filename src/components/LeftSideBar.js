@@ -59,6 +59,7 @@ function LeftSideBar() {
             <div className="labelListWrapper ">
               {labelList.map((labelData) => (
                 <div
+                  key={labelData.id}
                   id={labelData.id}
                   className={`labellistitem ${
                     active == labelData.id && "active"
@@ -67,7 +68,7 @@ function LeftSideBar() {
                     setActive(labelData.id);
                   }}
                 >
-                  <LabelList key={labelData.id} labelData={labelData} />
+                  <LabelList labelData={labelData} />
                 </div>
               ))}
             </div>
