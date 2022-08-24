@@ -40,9 +40,16 @@
 .emailtypeitem:hover {
   background-color: var(--hover-primary);
 }
+
+.activeEmailType {
+  background-color: var(--hover-primary);
+  font-weight: bold;
+}
+
 .emaillistwrapper {
   flex: 3;
   max-width: 80vw;
+  font-size: 12px;
 }
 .emaillist {
   display: flex;
