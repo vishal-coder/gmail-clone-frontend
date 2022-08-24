@@ -59,8 +59,8 @@ function EmailList() {
         </>
       ) : (
         <>
-          <h1>nothing to laod</h1>
-          <LoadingSpinner /> <h1>g</h1>
+          <h3>getting your mails</h3>
+          <LoadingSpinner />
         </>
       )}
     </div>

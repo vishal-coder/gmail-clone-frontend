@@ -16,6 +16,8 @@ import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { openComposeModal } from "../features/composeMailSlice";
 import { getLabelList } from "../services/LabelService.js";
+import { setMailList, setMailListLoading } from "../features/mailListSlice.js";
+import { getMailList } from "../services/MailService.js";
 
 function LeftSideBar() {
   const dispatch = useDispatch();
@@ -38,6 +40,24 @@ function LeftSideBar() {
 
   const [active, setActive] = useState("INBOX");
   console.log("acive is", active);
+
+  const getMailByLabel = async (labelType) => {
+    dispatch(setMailListLoading(true));
+    setActive(labelType);
+    console.log("inside getMailByLabel", labelType);
+    const token = localStorage.getItem("token");
+    const mails = await getMailList(token, {
+      mailOption: {
+        userId: "me",
+        labelIds: labelType,
+        format: "metadata",
+      },
+    });
+    console.log("getMailByLabel response is ", mails);
+
+    dispatch(setMailList(mails.data));
+    dispatch(setMailListLoading(false));
+  };
   return (
     <div className="leftsidebarwrapper">
       <div className="componsebtnDiv">
@@ -65,7 +85,7 @@ function LeftSideBar() {
                     active == labelData.id && "active"
                   }`}
                   onClick={() => {
-                    setActive(labelData.id);
+                    getMailByLabel(labelData.id);
                   }}
                 >
                   <LabelList labelData={labelData} />
