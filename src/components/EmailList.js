@@ -18,6 +18,7 @@ function EmailList() {
   const { mailList } = useSelector((state) => state.mails);
   const { viewMail } = useSelector((state) => state.mails);
   const { loadInbox } = useSelector((state) => state.mails);
+  const { mailCategory } = useSelector((state) => state.mails);
 
   console.log("mailListLoading", mailListLoading);
   console.log(mailList);
@@ -28,7 +29,7 @@ function EmailList() {
       const mails = await getMailList(token, {
         mailOption: {
           userId: "me",
-          labelIds: "INBOX",
+          labelIds: mailCategory,
           format: "metadata",
         },
       });
@@ -38,6 +39,8 @@ function EmailList() {
       dispatch(setLoadInbox(false));
     };
     if (loadInbox) {
+      console.log("loadInbox callleddd");
+
       getMails();
     }
   }, []);
@@ -55,14 +58,19 @@ function EmailList() {
   };
 
   const element = <h3>nothing to show</h3>;
+  const nonEmptyMailList = mailList.filter(Boolean);
 
   return (
     <div className="emaillist">
       {!mailListLoading ? (
         <>
-          {mailList == 0 ? element : <></>}
+          {!(nonEmptyMailList != 0 && nonEmptyMailList != null) ? (
+            element
+          ) : (
+            <></>
+          )}
 
-          {mailList.map((mail) => (
+          {nonEmptyMailList.map((mail) => (
             <div
               className={`emailitem ${
                 mail.lables.includes("UNREAD") && "unread"

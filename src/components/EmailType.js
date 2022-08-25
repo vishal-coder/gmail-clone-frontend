@@ -5,7 +5,11 @@ import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
 import { useDispatch } from "react-redux";
 import { openComposeModal } from "../features/composeMailSlice";
 import { getLabelList } from "../services/LabelService.js";
-import { setMailList, setMailListLoading } from "../features/mailListSlice.js";
+import {
+  setMailCategory,
+  setMailList,
+  setMailListLoading,
+} from "../features/mailListSlice.js";
 import { getMailList } from "../services/MailService.js";
 
 function EmailType() {
@@ -24,7 +28,7 @@ function EmailType() {
       },
     });
     console.log("getMailByLabel response is ", mails);
-
+    dispatch(setMailCategory(labelType));
     dispatch(setMailList(mails.data));
     dispatch(setMailListLoading(false));
   };

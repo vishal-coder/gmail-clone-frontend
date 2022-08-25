@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { openComposeModal } from "../features/composeMailSlice";
 import { getLabelList } from "../services/LabelService.js";
 import {
+  setMailCategory,
   setMailList,
   setMailListLoading,
   setViewMail,
@@ -50,7 +51,7 @@ function LeftSideBar() {
     dispatch(setViewMail(false));
 
     setActive(labelType);
-    console.log("inside getMailByLabel", labelType);
+    console.log("inside getMailByLabel-left side bar", labelType);
     const token = localStorage.getItem("token");
     const mails = await getMailList(token, {
       mailOption: {
@@ -61,6 +62,7 @@ function LeftSideBar() {
     });
     console.log("getMailByLabel response is ", mails);
 
+    dispatch(setMailCategory(labelType));
     dispatch(setMailList(mails.data));
     dispatch(setMailListLoading(false));
   };
