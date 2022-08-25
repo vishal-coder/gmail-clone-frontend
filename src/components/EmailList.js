@@ -3,13 +3,22 @@ import Checkbox from "@mui/material/Checkbox";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import { getMailList } from "../services/MailService.js";
 import LoadingSpinner from "./LoadingSpinner.js";
-import { setMailListLoading, setMailList } from "../features/mailListSlice.js";
+import {
+  setMailListLoading,
+  setMailList,
+  setViewMail,
+  setLoadInbox,
+} from "../features/mailListSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import StarRateIcon from "@mui/icons-material/StarRate";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 
 function EmailList() {
   const { mailListLoading } = useSelector((state) => state.mails);
   const { mailList } = useSelector((state) => state.mails);
+  const { viewMail } = useSelector((state) => state.mails);
+  const { loadInbox } = useSelector((state) => state.mails);
+
   console.log("mailListLoading", mailListLoading);
   console.log(mailList);
   const dispatch = useDispatch();
@@ -26,18 +35,41 @@ function EmailList() {
       console.log("mailList in email list is", mails);
       dispatch(setMailListLoading(false));
       dispatch(setMailList(mails.data));
+      dispatch(setLoadInbox(false));
     };
-    getMails();
+    if (loadInbox) {
+      getMails();
+    }
   }, []);
   console.log(mailListLoading);
-  console.log(mailList);
+  console.log(mailList == 0);
+
+  const navigate = useNavigate();
+
+  const viewMailDetails = (id) => {
+    // alert("getting mail dtails");
+    console.log("called view mail details");
+
+    dispatch(setViewMail(true));
+    navigate(`/loggedindashboard/viewMail/${id}`);
+  };
+
+  const element = <h3>nothing to show</h3>;
 
   return (
     <div className="emaillist">
       {!mailListLoading ? (
         <>
+          {mailList == 0 ? element : <></>}
+
           {mailList.map((mail) => (
-            <div className="emailitem">
+            <div
+              className={`emailitem ${
+                mail.lables.includes("UNREAD") && "unread"
+              }`}
+              key={mail.id}
+              onClick={() => viewMailDetails(mail.id)}
+            >
               <Checkbox inputProps={{ "aria-label": "controlled" }} />
               {mail.isStarred ? (
                 <StarRateIcon sx={{ color: "gold" }} />

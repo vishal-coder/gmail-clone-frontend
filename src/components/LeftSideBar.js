@@ -16,7 +16,11 @@ import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { openComposeModal } from "../features/composeMailSlice";
 import { getLabelList } from "../services/LabelService.js";
-import { setMailList, setMailListLoading } from "../features/mailListSlice.js";
+import {
+  setMailList,
+  setMailListLoading,
+  setViewMail,
+} from "../features/mailListSlice.js";
 import { getMailList } from "../services/MailService.js";
 
 function LeftSideBar() {
@@ -43,6 +47,8 @@ function LeftSideBar() {
 
   const getMailByLabel = async (labelType) => {
     dispatch(setMailListLoading(true));
+    dispatch(setViewMail(false));
+
     setActive(labelType);
     console.log("inside getMailByLabel", labelType);
     const token = localStorage.getItem("token");

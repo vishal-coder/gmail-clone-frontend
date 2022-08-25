@@ -6,6 +6,8 @@ export const mailListSlice = createSlice({
     mailList: [], // for user object
     mailCategory: "INBOX", // for storing the JWT
     mailListLoading: true,
+    viewMail: false,
+    loadInbox: true,
   },
   reducers: {
     setMailList: (state, action) => {
@@ -21,11 +23,24 @@ export const mailListSlice = createSlice({
       console.log("called set setMailListLoading", action);
       state.mailListLoading = action.payload;
     },
+    setViewMail: (state, action) => {
+      console.log("called set setViewMail", action);
+      state.viewMail = action.payload;
+    },
+    setLoadInbox: (state, action) => {
+      console.log("called set loadInbox", action);
+      state.loadInbox = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setMailList, setMailCategory, setMailListLoading } =
-  mailListSlice.actions;
+export const {
+  setMailList,
+  setMailCategory,
+  setMailListLoading,
+  setViewMail,
+  setLoadInbox,
+} = mailListSlice.actions;
 
 export default mailListSlice.reducer;

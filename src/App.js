@@ -37,7 +37,9 @@ function App() {
       {/* )} */}
       <Routes>
         <Route exact path="/" element={<GoogleLogin />} />
-        <Route exact path="/loggedindashboard" element={<Dashboard />} />
+        <Route exact path="/loggedindashboard" element={<Dashboard />}>
+          <Route exact path="viewMail/:id" element={<viewMail />} />
+        </Route>
       </Routes>
     </div>
   );
