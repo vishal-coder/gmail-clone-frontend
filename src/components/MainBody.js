@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./mainbody.css";
 import IconButton from "@mui/material/IconButton";
+import { useDispatch, useSelector } from "react-redux";
 
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
@@ -11,8 +12,27 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 import EmailType from "./EmailType.js";
 import EmailList from "./EmailList.js";
 import EmailListFooter from "./EmailListFooter";
+import { setMailList, setMailListLoading } from "../features/mailListSlice";
+import { getMailList } from "../services/MailService";
 
 function MainBody() {
+  const { mailListLoading } = useSelector((state) => state.mails);
+  const { mailCategory } = useSelector((state) => state.mails);
+  const dispatch = useDispatch();
+  const handleRefresh = async () => {
+    dispatch(setMailListLoading(true));
+    const token = localStorage.getItem("token");
+    const mails = await getMailList(token, {
+      mailOption: {
+        userId: "me",
+        labelIds: mailCategory,
+        format: "metadata",
+      },
+    });
+    console.log("mailList in email list is", mails);
+    dispatch(setMailListLoading(false));
+    dispatch(setMailList(mails.data));
+  };
   return (
     <div className="mainbodywrapper">
       <div className="emailsetting">
@@ -23,7 +43,12 @@ function MainBody() {
           <IconButton aria-label="arrow-dropdown">
             <ArrowDropDownOutlinedIcon />
           </IconButton>
-          <IconButton aria-label="refresh">
+          <IconButton
+            aria-label="refresh"
+            onClick={() => {
+              handleRefresh();
+            }}
+          >
             <RefreshOutlinedIcon />
           </IconButton>
           <IconButton aria-label="more">
