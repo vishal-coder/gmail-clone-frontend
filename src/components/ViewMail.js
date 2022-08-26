@@ -1,5 +1,5 @@
 import "./viewmail.css";
-import React from "react";
+import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,6 +26,9 @@ import Tooltip from "@mui/material/Tooltip";
 import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import { deleteMail } from "../services/DeleteMailService";
+import { updateMailLabels } from "../services/LabelService";
+import ReportOffIcon from "@mui/icons-material/ReportOff";
+import { getMailList } from "../services/MailService";
 
 function ViewMail() {
   const { mailList } = useSelector((state) => state.mails);
@@ -36,12 +39,29 @@ function ViewMail() {
   console.log("id inside view mail is", params);
   console.log("id inside view mail is-mailList", mailList);
   let mail = mailList.find((item) => item && item.id === params.id);
+  const [isStarred, setIsStarred] = useState(mail.isStarred || false);
 
-  // words.filter((word) => word.length > 6);
+  console.log("is starred-mail", mail);
 
   const sanitizedBody = mail.mailbody.replace(/hidden/gi, "");
 
   let mailpart = parse(sanitizedBody);
+  const { mailListLoading } = useSelector((state) => state.mails);
+  const { mailCategory } = useSelector((state) => state.mails);
+  const handleRefresh = async () => {
+    dispatch(setMailListLoading(true));
+    const token = localStorage.getItem("token");
+    const mails = await getMailList(token, {
+      mailOption: {
+        userId: "me",
+        labelIds: mailCategory,
+        format: "metadata",
+      },
+    });
+    console.log("mailList in email list is", mails);
+    dispatch(setMailListLoading(false));
+    dispatch(setMailList(mails.data));
+  };
 
   const MailComponent = () => {
     return <div>{mailpart}</div>;
@@ -52,6 +72,17 @@ function ViewMail() {
     const deleteResp = deleteMail(token, id);
     console.log("deleteResp", deleteResp);
   };
+
+  const handleUpdateMaillables = (id, addLabel, removeLabel) => {
+    const token = localStorage.getItem("token");
+    const values = {
+      id: id,
+      addLabelIds: addLabel,
+      removeLabelIds: removeLabel,
+    };
+    console.log(values);
+    updateMailLabels(token, values);
+  };
   return (
     <div className="viewmailwrapper">
       <div className="viewmailtoptions">
@@ -61,6 +92,7 @@ function ViewMail() {
               <ArrowBackIcon
                 onClick={() => {
                   dispatch(setViewMail(false));
+                  handleRefresh();
                   navigate(-1, { replace: true });
                 }}
               />
@@ -91,14 +123,20 @@ function ViewMail() {
         </div>
         <div>
           <Tooltip title="Unread">
-            <IconButton aria-label="Unread">
+            <IconButton
+              aria-label="Unread"
+              onClick={() => handleUpdateMaillables(mail.id, "UNREAD", null)}
+            >
               <MarkEmailUnreadIcon />
             </IconButton>
           </Tooltip>
         </div>
         <div>
           <Tooltip title="Spam">
-            <IconButton aria-label="Spam">
+            <IconButton
+              aria-label="Spam"
+              onClick={() => handleUpdateMaillables(mail.id, "SPAM", null)}
+            >
               <ReportOutlinedIcon />
             </IconButton>
           </Tooltip>
@@ -107,8 +145,30 @@ function ViewMail() {
         <div>
           {" "}
           <Tooltip title="Spam">
-            <IconButton aria-label="Spam">
-              {mail.isStarred ? (
+            <IconButton
+              aria-label="Spam"
+              onClick={() => {
+                if (isStarred) {
+                  return (
+                    alert("pl"),
+                    handleUpdateMaillables(mail.id, null, "STARRED"),
+                    setIsStarred(false)
+                  );
+                } else {
+                  return (
+                    alert("pl2"),
+                    handleUpdateMaillables(mail.id, "STARRED", null),
+                    setIsStarred(true)
+                  );
+                }
+                // mail.isStarred
+                //   ? (handleUpdateMaillables(mail.id, null, "STARRED"),
+                //     setIsStarred(false))
+                //   : (handleUpdateMaillables(mail.id, "STARRED", null),
+                //     setIsStarred(true));
+              }}
+            >
+              {isStarred ? (
                 <StarRateIcon sx={{ color: "gold" }} />
               ) : (
                 <StarBorderOutlinedIcon />
