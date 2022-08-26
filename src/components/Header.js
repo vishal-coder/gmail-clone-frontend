@@ -26,8 +26,17 @@ import {
 import Tooltip from "@mui/material/Tooltip";
 import { Avatar, Menu, MenuItem } from "@mui/material";
 import { logoutUser } from "../services/LogoutService";
+import {
+  setMailCategory,
+  setMailList,
+  setMailListLoading,
+} from "../features/mailListSlice";
+import { getMailList } from "../services/MailService";
 function Header() {
   const { userInfo } = useSelector((state) => state.user);
+  const { mailCategory } = useSelector((state) => state.mails);
+  const [searchText, setSearchText] = useState("");
+
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,6 +52,35 @@ function Header() {
       navigate("/");
     } else {
       alert("Please try again later");
+    }
+  };
+  const handleChange = (event) => {
+    setSearchText(event.target.value);
+  };
+
+  const handleSearch = async (e, flag) => {
+    // alert("clieke");
+
+    if (e.keyCode === 13 || flag) {
+      if (!searchText) {
+        return;
+      }
+      dispatch(setMailListLoading(true));
+      alert("enter");
+      const token = localStorage.getItem("token");
+      dispatch(setMailCategory("INBOX"));
+
+      const mails = await getMailList(token, {
+        mailOption: {
+          userId: "me",
+          labelIds: "INBOX",
+          format: "full",
+          q: searchText,
+        },
+      });
+      console.log("mailList in email list is", mails);
+      dispatch(setMailListLoading(false));
+      dispatch(setMailList(mails.data));
     }
   };
   return (
@@ -80,6 +118,9 @@ function Header() {
           <IconButton
             sx={{ p: "10px", backgroundColor: "#eef3fc;" }}
             aria-label="menu"
+            onClick={(e) => {
+              handleSearch(e, true);
+            }}
           >
             <SearchIcon />
           </IconButton>
@@ -90,6 +131,11 @@ function Header() {
             sx={{ ml: 1, flex: 0.7, backgroundColor: "white" }}
             placeholder="Search in emails"
             inputProps={{ "aria-label": "search google maps" }}
+            onKeyDown={(e) => {
+              handleSearch(e, false);
+            }}
+            onChange={handleChange}
+            value={searchText}
           />
         </Tooltip>
       </div>
