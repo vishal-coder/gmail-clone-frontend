@@ -30,6 +30,8 @@ import {
   setMailCategory,
   setMailList,
   setMailListLoading,
+  setPageToken,
+  setResultSizeEstimate,
 } from "../features/mailListSlice";
 import { getMailList } from "../services/MailService";
 function Header() {
@@ -66,7 +68,6 @@ function Header() {
         return;
       }
       dispatch(setMailListLoading(true));
-      alert("enter");
       const token = localStorage.getItem("token");
       dispatch(setMailCategory("INBOX"));
 
@@ -81,6 +82,8 @@ function Header() {
       console.log("mailList in email list is", mails);
       dispatch(setMailListLoading(false));
       dispatch(setMailList(mails.data));
+      dispatch(setPageToken(mails.pageTokenInfo.pageToken));
+      dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
     }
   };
   return (

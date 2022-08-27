@@ -20,6 +20,8 @@ import {
   setMailCategory,
   setMailList,
   setMailListLoading,
+  setPageToken,
+  setResultSizeEstimate,
   setViewMail,
 } from "../features/mailListSlice.js";
 import { getMailList } from "../services/MailService.js";
@@ -65,6 +67,8 @@ function LeftSideBar() {
     dispatch(setMailCategory(labelType));
     dispatch(setMailList(mails.data));
     dispatch(setMailListLoading(false));
+    dispatch(setPageToken(mails.pageTokenInfo.pageToken));
+    dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
   };
   return (
     <div className="leftsidebarwrapper">

@@ -12,12 +12,20 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 import EmailType from "./EmailType.js";
 import EmailList from "./EmailList.js";
 import EmailListFooter from "./EmailListFooter";
-import { setMailList, setMailListLoading } from "../features/mailListSlice";
+import {
+  setMailList,
+  setMailListLoading,
+  setPageToken,
+  setResultSizeEstimate,
+} from "../features/mailListSlice";
 import { getMailList } from "../services/MailService";
 
 function MainBody() {
   const { mailListLoading } = useSelector((state) => state.mails);
   const { mailCategory } = useSelector((state) => state.mails);
+  const { pageToken } = useSelector((state) => state.mails);
+  const { resultSizeEstimate } = useSelector((state) => state.mails);
+
   const dispatch = useDispatch();
   const handleRefresh = async () => {
     dispatch(setMailListLoading(true));
@@ -30,8 +38,29 @@ function MainBody() {
       },
     });
     console.log("mailList in email list is", mails);
+    console.log("mailList in email list is--@--", mails);
     dispatch(setMailListLoading(false));
     dispatch(setMailList(mails.data));
+    dispatch(setPageToken(mails.pageTokenInfo.pageToken));
+    dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
+  };
+
+  const handleNextPageMails = async () => {
+    dispatch(setMailListLoading(true));
+    const token = localStorage.getItem("token");
+    const mails = await getMailList(token, {
+      mailOption: {
+        userId: "me",
+        labelIds: mailCategory,
+        format: "metadata",
+        pageToken: pageToken || null,
+      },
+    });
+    console.log("mailList in mainbody handleNextPageMails  is", mails);
+    dispatch(setMailListLoading(false));
+    dispatch(setMailList(mails.data));
+    dispatch(setPageToken(mails.pageTokenInfo.pageToken));
+    dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
   };
   return (
     <div className="mainbodywrapper">
@@ -51,18 +80,36 @@ function MainBody() {
           >
             <RefreshOutlinedIcon />
           </IconButton>
-          <IconButton aria-label="more">
+          <IconButton
+            aria-label="more"
+            onClick={() => {
+              handleNextPageMails();
+            }}
+          >
             <MoreVertOutlinedIcon />
           </IconButton>
         </div>
         <div>
           {/* <p sx={{ display: "block" }}> */}
-          <span>1-8</span> of <span>0</span>
+          {/* <span>1-8</span> of <span></span> */}
+          {/* <div>1-8</div>
+          <div>of</div>
+          <div> {resultSizeEstimate}</div> */}
           {/* </p> */}
-          <IconButton aria-label="more">
+          <IconButton
+            aria-label="more"
+            onClick={() => {
+              handleNextPageMails();
+            }}
+          >
             <ArrowBackIosNewOutlinedIcon />
           </IconButton>
-          <IconButton aria-label="more">
+          <IconButton
+            aria-label="more"
+            onClick={() => {
+              handleNextPageMails();
+            }}
+          >
             <ArrowForwardIosOutlinedIcon />
           </IconButton>
         </div>

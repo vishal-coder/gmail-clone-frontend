@@ -8,6 +8,8 @@ import {
   setMailList,
   setViewMail,
   setLoadInbox,
+  setPageToken,
+  setResultSizeEstimate,
 } from "../features/mailListSlice.js";
 import { useDispatch, useSelector } from "react-redux";
 import StarRateIcon from "@mui/icons-material/StarRate";
@@ -22,6 +24,7 @@ function EmailList() {
 
   console.log("mailListLoading", mailListLoading);
   console.log(mailList);
+  console.log(mailList);
   const dispatch = useDispatch();
   useEffect(() => {
     const getMails = async () => {
@@ -33,10 +36,12 @@ function EmailList() {
           format: "metadata",
         },
       });
-      console.log("mailList in email list is", mails);
+      console.log("mailList in email list is--", mails);
       dispatch(setMailListLoading(false));
       dispatch(setMailList(mails.data));
       dispatch(setLoadInbox(false));
+      dispatch(setPageToken(mails.pageTokenInfo.pageToken));
+      dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
     };
     if (loadInbox) {
       console.log("loadInbox callleddd");

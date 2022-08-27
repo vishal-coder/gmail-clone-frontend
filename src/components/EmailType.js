@@ -9,6 +9,8 @@ import {
   setMailCategory,
   setMailList,
   setMailListLoading,
+  setPageToken,
+  setResultSizeEstimate,
 } from "../features/mailListSlice.js";
 import { getMailList } from "../services/MailService.js";
 
@@ -31,6 +33,8 @@ function EmailType() {
     dispatch(setMailCategory(labelType));
     dispatch(setMailList(mails.data));
     dispatch(setMailListLoading(false));
+    dispatch(setPageToken(mails.pageTokenInfo.pageToken));
+    dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
   };
   return (
     <div className="emailtype">

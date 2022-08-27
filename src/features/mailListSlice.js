@@ -8,6 +8,8 @@ export const mailListSlice = createSlice({
     mailListLoading: true,
     viewMail: false,
     loadInbox: true,
+    pageToken: null,
+    resultSizeEstimate: null,
   },
   reducers: {
     setMailList: (state, action) => {
@@ -31,6 +33,14 @@ export const mailListSlice = createSlice({
       console.log("called set loadInbox", action);
       state.loadInbox = action.payload;
     },
+    setPageToken: (state, action) => {
+      console.log("called set pageToken", action);
+      state.pageToken = action.payload;
+    },
+    setResultSizeEstimate: (state, action) => {
+      console.log("called set resultSizeEstimate:", action);
+      state.resultSizeEstimate = action.payload;
+    },
   },
 });
 
@@ -41,6 +51,8 @@ export const {
   setMailListLoading,
   setViewMail,
   setLoadInbox,
+  setPageToken,
+  setResultSizeEstimate,
 } = mailListSlice.actions;
 
 export default mailListSlice.reducer;

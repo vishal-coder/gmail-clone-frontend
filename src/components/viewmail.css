@@ -38,6 +38,7 @@
   gap: 1rem;
   justify-items: center;
   align-items: center;
+  justify-content: space-between;
 }
 
 h3 {
@@ -101,4 +102,15 @@ h4 {
 .unread {
   font-weight: bold;
   color: black;
+}
+
+.fullsizeinput {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+textarea {
+  max-height: 100px;
+  overflow-y: auto;
 }
