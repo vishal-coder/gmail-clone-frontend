@@ -36,17 +36,29 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import ReplyIcon from "@mui/icons-material/Reply";
 import { ValidateEmail } from "../services/utilityservice";
+import { replyMailService } from "../services/ReplyMailService";
 
 function ViewMail() {
   const { mailList } = useSelector((state) => state.mails);
   const [showForwardOptions, setShowForwardOptions] = useState(false);
   const [forwardMail, setForwardMail] = useState("");
   const [forwardMailBody, setForwardMailBody] = useState("");
+
+  const [showReplyOptions, setShowReplyOptions] = useState(false);
+
+  const [replyMailBody, setReplyMailBody] = useState("");
   const handleforwardMailChange = (event) => {
     setForwardMail(event.target.value);
   };
   const handleforwardMailBodyChange = (event) => {
     setForwardMailBody(event.target.value);
+  };
+
+  const handleReplyMailChange = (event) => {
+    setReplyMail(event.target.value);
+  };
+  const handleReplyMailBodyChange = (event) => {
+    setReplyMailBody(event.target.value);
   };
 
   const navigate = useNavigate();
@@ -55,6 +67,9 @@ function ViewMail() {
   console.log("id inside view mail is", params);
   console.log("id inside view mail is-mailList", mailList);
   let mail = mailList.find((item) => item && item.id === params.id);
+  const [replyMail, setReplyMail] = useState(
+    mail.sender.substring(mail.sender.indexOf("<") + 1, mail.sender.length - 1)
+  );
   const [isStarred, setIsStarred] = useState(mail.isStarred || false);
 
   console.log("is starred-mail", mail);
@@ -122,6 +137,28 @@ function ViewMail() {
     setShowForwardOptions(false);
     setForwardMail("");
     setForwardMailBody("");
+    console.log("response of  forward mail is", res);
+  };
+
+  const handleReplyMail = (id) => {
+    const token = localStorage.getItem("token");
+    console.log("replyMail", replyMail);
+    const validEmail = ValidateEmail(replyMail);
+    alert(validEmail);
+    if (!validEmail) {
+      alert("You have entered an invalid email address!");
+      return;
+    }
+
+    const values = {
+      id: id,
+      to: replyMail,
+      body: replyMailBody,
+    };
+    const res = replyMailService(token, values);
+    alert("mail forwarded successfully");
+    setShowReplyOptions(false);
+    setReplyMailBody("");
     console.log("response of  forward mail is", res);
   };
 
@@ -227,7 +264,7 @@ function ViewMail() {
             variant="contained"
             startIcon={<ReplyIcon />}
             sx={{ marginRight: "2rem" }}
-            // onClick={() => handleForwardMail(id)}
+            onClick={() => setShowReplyOptions(true)}
           >
             Reply
           </Button>
@@ -275,6 +312,50 @@ function ViewMail() {
               endIcon={<SendIcon />}
               sx={{ marginRight: "2rem" }}
               onClick={() => handleForwardMail(mail.id)}
+            >
+              {" "}
+              Send
+            </Button>
+          </div>
+          <hr />
+        </div>
+      )}
+
+      {showReplyOptions && (
+        <div className="forwardMailDiv">
+          <hr />
+          <div>
+            <input
+              className="fullsizeinput"
+              type="email"
+              placeholder="enter email of recepient"
+              onChange={handleReplyMailChange}
+              value={mail.sender.substring(
+                mail.sender.indexOf("<") + 1,
+                mail.sender.length - 1
+              )}
+              readOnly
+            />
+          </div>
+          <hr />
+          <div>
+            <textarea
+              className="fullsizeinput"
+              cols={30}
+              rows={10}
+              type="text"
+              placeholder="enter message"
+              onChange={handleReplyMailBodyChange}
+              value={replyMailBody}
+            />
+          </div>
+          <div>
+            <Button
+              size="small"
+              variant="contained"
+              startIcon={<ReplyIcon />}
+              sx={{ marginRight: "2rem" }}
+              onClick={() => handleReplyMail(mail.id)}
             >
               {" "}
               Send
