@@ -1,18 +1,19 @@
-import "./viewmail.css";
-import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MarkEmailUnreadIcon from "@mui/icons-material/MarkEmailUnread";
+import ReplyIcon from "@mui/icons-material/Reply";
 import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
+import SendIcon from "@mui/icons-material/Send";
+import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
+import StarRateIcon from "@mui/icons-material/StarRate";
 import Avatar from "@mui/material/Avatar";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import {
-  useNavigate,
-  Link,
-  useSearchParams,
-  useParams,
-} from "react-router-dom";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import parse from "html-react-parser";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   setLoadInbox,
   setMailList,
@@ -21,22 +22,13 @@ import {
   setResultSizeEstimate,
   setViewMail,
 } from "../features/mailListSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Buffer } from "buffer";
-import parse from "html-react-parser";
-import Tooltip from "@mui/material/Tooltip";
-import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
-import StarRateIcon from "@mui/icons-material/StarRate";
 import { deleteMail } from "../services/DeleteMailService";
-import { updateMailLabels } from "../services/LabelService";
-import ReportOffIcon from "@mui/icons-material/ReportOff";
-import { getMailList } from "../services/MailService";
 import { forwardMailService } from "../services/ForwardMailService";
-import Button from "@mui/material/Button";
-import SendIcon from "@mui/icons-material/Send";
-import ReplyIcon from "@mui/icons-material/Reply";
-import { ValidateEmail } from "../services/utilityservice";
+import { updateMailLabels } from "../services/LabelService";
+import { getMailList } from "../services/MailService";
 import { replyMailService } from "../services/ReplyMailService";
+import { ValidateEmail } from "../services/utilityservice";
+import "./viewmail.css";
 
 function ViewMail() {
   const { mailList } = useSelector((state) => state.mails);
@@ -64,18 +56,12 @@ function ViewMail() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
-  console.log("id inside view mail is", params);
-  console.log("id inside view mail is-mailList", mailList);
   let mail = mailList.find((item) => item && item.id === params.id);
   const [replyMail, setReplyMail] = useState(
     mail.sender.substring(mail.sender.indexOf("<") + 1, mail.sender.length - 1)
   );
   const [isStarred, setIsStarred] = useState(mail.isStarred || false);
-
-  console.log("is starred-mail", mail);
-
   const sanitizedBody = mail.mailbody.replace(/hidden/gi, "");
-
   let mailpart = parse(sanitizedBody);
   const { mailListLoading } = useSelector((state) => state.mails);
   const { mailCategory } = useSelector((state) => state.mails);
@@ -89,7 +75,6 @@ function ViewMail() {
         format: "metadata",
       },
     });
-    console.log("mailList in email list is", mails);
     dispatch(setMailListLoading(false));
     dispatch(setMailList(mails.data));
     dispatch(setPageToken(mails.pageTokenInfo.pageToken));
@@ -103,7 +88,6 @@ function ViewMail() {
   const handleDeleteMail = (id) => {
     const token = localStorage.getItem("token");
     const deleteResp = deleteMail(token, id);
-    console.log("deleteResp", deleteResp);
   };
 
   const handleUpdateMaillables = (id, addLabel, removeLabel) => {
@@ -137,14 +121,11 @@ function ViewMail() {
     setShowForwardOptions(false);
     setForwardMail("");
     setForwardMailBody("");
-    console.log("response of  forward mail is", res);
   };
 
   const handleReplyMail = (id) => {
     const token = localStorage.getItem("token");
-    console.log("replyMail", replyMail);
     const validEmail = ValidateEmail(replyMail);
-    alert(validEmail);
     if (!validEmail) {
       alert("You have entered an invalid email address!");
       return;
@@ -159,7 +140,6 @@ function ViewMail() {
     alert("mail forwarded successfully");
     setShowReplyOptions(false);
     setReplyMailBody("");
-    console.log("response of  forward mail is", res);
   };
 
   return (
@@ -183,7 +163,6 @@ function ViewMail() {
             <IconButton
               aria-label="Delete"
               onClick={() => {
-                // navigate(-1, { replace: true });
                 dispatch(setViewMail(false));
                 dispatch(setMailListLoading(true));
                 dispatch(setLoadInbox(true));
@@ -238,11 +217,6 @@ function ViewMail() {
                     setIsStarred(true)
                   );
                 }
-                // mail.isStarred
-                //   ? (handleUpdateMaillables(mail.id, null, "STARRED"),
-                //     setIsStarred(false))
-                //   : (handleUpdateMaillables(mail.id, "STARRED", null),
-                //     setIsStarred(true));
               }}
             >
               {isStarred ? (
@@ -257,7 +231,7 @@ function ViewMail() {
       <div className="viewmailheader">
         <div>
           <h2>{mail.subject}</h2>
-          <h4>{mail.lables}</h4>
+          {/* <h4>{mail.lables}</h4> */}
         </div>
         <div>
           <Button
@@ -272,10 +246,7 @@ function ViewMail() {
             variant="contained"
             endIcon={<SendIcon />}
             sx={{ marginRight: "2rem" }}
-            onClick={
-              () => setShowForwardOptions(true)
-              // handleForwardMail(mail.id)
-            }
+            onClick={() => setShowForwardOptions(true)}
           >
             Forward
           </Button>

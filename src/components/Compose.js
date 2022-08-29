@@ -1,22 +1,20 @@
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import Button from "@mui/material/Button";
 import React, { useState } from "react";
 import "./compose.css";
-import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import HeightOutlinedIcon from "@mui/icons-material/HeightOutlined";
-import Button from "@mui/material/Button";
 
-import SendIcon from "@mui/icons-material/Send";
-import FormatColorTextOutlinedIcon from "@mui/icons-material/FormatColorTextOutlined";
-import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
-import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
-import TagFacesOutlinedIcon from "@mui/icons-material/TagFacesOutlined";
 import AddToDriveOutlinedIcon from "@mui/icons-material/AddToDriveOutlined";
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import FormatColorTextOutlinedIcon from "@mui/icons-material/FormatColorTextOutlined";
+import InsertLinkOutlinedIcon from "@mui/icons-material/InsertLinkOutlined";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import SendIcon from "@mui/icons-material/Send";
+import TagFacesOutlinedIcon from "@mui/icons-material/TagFacesOutlined";
 import { useDispatch } from "react-redux";
 import { closeComposeModal } from "../features/composeMailSlice";
-import { ValidateEmail } from "../services/utilityservice";
 import { sendMailService } from "../services/SendMailService";
+import { ValidateEmail } from "../services/utilityservice";
 
 function Compose() {
   const dispatch = useDispatch();
@@ -62,6 +60,11 @@ function Compose() {
     };
 
     const res = await sendMailService(token, values);
+    setMailRecipient("");
+    setMailbccRecipient("");
+    setMailccRecipient("");
+    setMailBody("");
+    setMailSubject("");
     if (res.success) {
       alert("mail sent successfully");
     } else {
