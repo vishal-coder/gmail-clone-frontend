@@ -1,31 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./header.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { faCircleQuestion } from "@fortawesome/free-regular-svg-icons";
-// import SettingsIcon from "@mui/icons-material/Settings";
 import AppsIcon from "@mui/icons-material/Apps";
-import SettingsIcon from "@mui/icons-material/Settings";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import IconButton from "@mui/material/IconButton";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import SearchIcon from "@mui/icons-material/Search";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import InputBase from "@mui/material/InputBase";
-import { getUserProfile } from "../services/ProfileService.js";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setUserProfile,
-  setIsLoggedIn,
-  LOG_OUT,
-} from "../features/user/userSlice.js";
-import Tooltip from "@mui/material/Tooltip";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { Avatar, Menu, MenuItem } from "@mui/material";
-import { logoutUser } from "../services/LogoutService";
+import IconButton from "@mui/material/IconButton";
+import InputBase from "@mui/material/InputBase";
+import Tooltip from "@mui/material/Tooltip";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setMailCategory,
   setMailList,
@@ -33,6 +19,8 @@ import {
   setPageToken,
   setResultSizeEstimate,
 } from "../features/mailListSlice";
+import { LOG_OUT } from "../features/user/userSlice.js";
+import { logoutUser } from "../services/LogoutService";
 import { getMailList } from "../services/MailService";
 function Header() {
   const { userInfo } = useSelector((state) => state.user);
@@ -43,11 +31,9 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
-    alert("clicked");
     dispatch(LOG_OUT());
     const token = localStorage.getItem("token");
     const response = await logoutUser(token);
-    console.log(response);
     if (response.success) {
       dispatch(LOG_OUT);
       localStorage.removeItem("token");
@@ -61,8 +47,6 @@ function Header() {
   };
 
   const handleSearch = async (e, flag) => {
-    // alert("clieke");
-
     if (e.keyCode === 13 || flag) {
       if (!searchText) {
         return;
@@ -79,7 +63,6 @@ function Header() {
           q: searchText,
         },
       });
-      console.log("mailList in email list is", mails);
       dispatch(setMailListLoading(false));
       dispatch(setMailList(mails.data));
       dispatch(setPageToken(mails.pageTokenInfo.pageToken));
@@ -92,9 +75,7 @@ function Header() {
         <IconButton aria-label="reorder" className="icons">
           <ReorderIcon />
         </IconButton>
-        {/* <div className="icons">
-          <FontAwesomeIcon icon={faBars} />
-        </div> */}
+
         <div>
           {" "}
           <Tooltip title="Gmail">
@@ -106,17 +87,6 @@ function Header() {
         </div>
       </div>
       <div className="searchDiv">
-        {/* <InputGroup className="mb-3 searchInput">
-          {/* <FontAwesomeIcon icon={faMagnifyingGlass} className="searchIcon" /> */}
-        {/* <IconButton aria-label="Search">
-          <SearchIcon />
-        </IconButton> */}
-        {/* <Form.Control
-          aria-label="Example text with button addon"
-          aria-describedby="basic-addon1"
-          placeholder="Search in emails"
-        /> */}
-        {/* </InputGroup> */}
         <Tooltip title="Search">
           <IconButton
             sx={{ p: "10px", backgroundColor: "#eef3fc;" }}
@@ -161,7 +131,6 @@ function Header() {
         <Tooltip title={userInfo && userInfo.name ? userInfo.name : userInfo}>
           <Avatar
             alt={userInfo && userInfo.name ? userInfo.name : userInfo}
-            // src="https://lh3.googleusercontent.com/a-/AFdZucoT3CTGv5f5g9JSEqCAPiEJ_P8N4CEa-KGYhTxw=s96-c"
             src={
               userInfo && userInfo.picture ? userInfo.picture : userInfo.picture
             }
