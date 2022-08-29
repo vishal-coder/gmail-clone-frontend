@@ -16,7 +16,6 @@
 }
 
 .left-header {
-  /* flex: 1; */
   max-width: 20rem;
   min-width: 12rem;
   display: flex;
@@ -57,17 +56,13 @@
   background-color: white;
   border-radius: 10px;
   text-align: left;
-  /* padding-left: 1rem; */
-  /* margin-left: 1rem; */
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
 }
 
 .searchInput input {
-  /* padding-left: 1rem; */
   background-color: #eef3fc;
-  /* color: green; */
   border: none;
   height: 2rem;
   width: 100%;

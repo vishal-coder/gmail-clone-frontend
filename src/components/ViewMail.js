@@ -88,6 +88,9 @@ function ViewMail() {
   const handleDeleteMail = (id) => {
     const token = localStorage.getItem("token");
     const deleteResp = deleteMail(token, id);
+    if (deleteResp.success) {
+      alert("mail deleted successfully");
+    }
   };
 
   const handleUpdateMaillables = (id, addLabel, removeLabel) => {
@@ -97,15 +100,12 @@ function ViewMail() {
       addLabelIds: addLabel,
       removeLabelIds: removeLabel,
     };
-    console.log(values);
     updateMailLabels(token, values);
   };
 
   const handleForwardMail = (id) => {
     const token = localStorage.getItem("token");
-    console.log(forwardMail);
     const validEmail = ValidateEmail(forwardMail);
-    alert(validEmail);
     if (!validEmail) {
       alert("You have entered an invalid email address!");
       return;

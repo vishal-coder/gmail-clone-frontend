@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
-import InboxIcon from "@mui/icons-material/Inbox";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import SendIcon from "@mui/icons-material/Send";
-import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
-import LabelImportantOutlinedIcon from "@mui/icons-material/LabelImportantOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
-import ScheduleSendOutlinedIcon from "@mui/icons-material/ScheduleSendOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import InboxIcon from "@mui/icons-material/Inbox";
+import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
+import SendIcon from "@mui/icons-material/Send";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
+import TaskOutlinedIcon from "@mui/icons-material/TaskOutlined";
+import React from "react";
 
 function LabelList({ labelData: LabelData }) {
   const getLabelIcon = (name) => {
@@ -58,10 +55,7 @@ function LabelList({ labelData: LabelData }) {
         break;
     }
   };
-  //getLabelIcon();
   LabelData.Icon = getLabelIcon(LabelData.name);
-  console.log("getLabelIcon -- ", getLabelIcon(LabelData.name));
-  console.log("labelData.Icon -- ", LabelData.Icon);
   return (
     <>
       {" "}
@@ -74,5 +68,4 @@ function LabelList({ labelData: LabelData }) {
     </>
   );
 }
-
 export default LabelList;

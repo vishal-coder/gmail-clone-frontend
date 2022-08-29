@@ -22,11 +22,9 @@
   color: black !important;
   margin: 10px !important;
   padding: 1rem !important;
-  /* text-transform: capitalize; */
 }
 
 .componsebtnDiv span {
-  /* padding: 2rem; */
 }
 
 .componsebtn:hover {
@@ -44,7 +42,6 @@
 }
 .labellistitem {
   display: flex;
-  /* justify-content: space-between; */
   height: 2rem;
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;

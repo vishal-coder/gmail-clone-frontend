@@ -20,7 +20,6 @@ function EmailType() {
   const getMailByLabel = async (labelType) => {
     dispatch(setMailListLoading(true));
     setActive(labelType);
-    console.log("inside getMailByLabel", labelType);
     const token = localStorage.getItem("token");
     const mails = await getMailList(token, {
       mailOption: {
@@ -29,7 +28,6 @@ function EmailType() {
         format: "metadata",
       },
     });
-    console.log("getMailByLabel response is ", mails);
     dispatch(setMailCategory(labelType));
     dispatch(setMailList(mails.data));
     dispatch(setMailListLoading(false));

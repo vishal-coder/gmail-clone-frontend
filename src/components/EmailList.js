@@ -22,9 +22,6 @@ function EmailList() {
   const { loadInbox } = useSelector((state) => state.mails);
   const { mailCategory } = useSelector((state) => state.mails);
 
-  console.log("mailListLoading", mailListLoading);
-  console.log(mailList);
-  console.log(mailList);
   const dispatch = useDispatch();
   useEffect(() => {
     const getMails = async () => {
@@ -36,7 +33,7 @@ function EmailList() {
           format: "metadata",
         },
       });
-      console.log("mailList in email list is--", mails);
+
       dispatch(setMailListLoading(false));
       dispatch(setMailList(mails.data));
       dispatch(setLoadInbox(false));
@@ -44,20 +41,12 @@ function EmailList() {
       dispatch(setResultSizeEstimate(mails.pageTokenInfo.resultSizeEstimate));
     };
     if (loadInbox) {
-      console.log("loadInbox callleddd");
-
       getMails();
     }
   }, []);
-  console.log(mailListLoading);
-  console.log(mailList == 0);
 
   const navigate = useNavigate();
-
   const viewMailDetails = (id) => {
-    // alert("getting mail dtails");
-    console.log("called view mail details");
-
     dispatch(setViewMail(true));
     navigate(`/loggedindashboard/viewMail/${id}`);
   };
@@ -94,13 +83,6 @@ function EmailList() {
               <div className="emailDate">{mail.date}</div>
             </div>
           ))}
-          {/* <div className="emailitem">
-            <Checkbox inputProps={{ "aria-label": "controlled" }} />
-            <StarBorderOutlinedIcon />
-            <div className="emailSender">sender</div>
-            <div className="emailBody">Body of the mail</div>
-            <div className="emailDate">18 Aug</div>
-          </div>{" "} */}
         </>
       ) : (
         <>

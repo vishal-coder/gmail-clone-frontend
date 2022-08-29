@@ -1,17 +1,14 @@
-import React, { useState } from "react";
-import "./mainbody.css";
 import IconButton from "@mui/material/IconButton";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import "./mainbody.css";
 
-import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
-import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
-import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
+import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
-import EmailType from "./EmailType.js";
-import EmailList from "./EmailList.js";
-import EmailListFooter from "./EmailListFooter";
+import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 import {
   setMailList,
   setMailListLoading,
@@ -19,6 +16,8 @@ import {
   setResultSizeEstimate,
 } from "../features/mailListSlice";
 import { getMailList } from "../services/MailService";
+import EmailList from "./EmailList.js";
+import EmailType from "./EmailType.js";
 
 function MainBody() {
   const { mailListLoading } = useSelector((state) => state.mails);
@@ -37,8 +36,6 @@ function MainBody() {
         format: "metadata",
       },
     });
-    console.log("mailList in email list is", mails);
-    console.log("mailList in email list is--@--", mails);
     dispatch(setMailListLoading(false));
     dispatch(setMailList(mails.data));
     dispatch(setPageToken(mails.pageTokenInfo.pageToken));
@@ -56,7 +53,6 @@ function MainBody() {
         pageToken: pageToken || null,
       },
     });
-    console.log("mailList in mainbody handleNextPageMails  is", mails);
     dispatch(setMailListLoading(false));
     dispatch(setMailList(mails.data));
     dispatch(setPageToken(mails.pageTokenInfo.pageToken));

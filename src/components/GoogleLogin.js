@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
-import "./login.css";
-import { useNavigate, Link, useSearchParams } from "react-router-dom";
-import { setUserToken } from "../features/user/userSlice.js";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserProfile, setIsLoggedIn } from "../features/user/userSlice.js";
+import { useDispatch } from "react-redux";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  setIsLoggedIn,
+  setUserProfile,
+  setUserToken,
+} from "../features/user/userSlice.js";
 import { getUserProfile } from "../services/ProfileService.js";
+import "./login.css";
 
 function GoogleLogin() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,10 +16,8 @@ function GoogleLogin() {
 
   useEffect(() => {
     const token = searchParams.get("token");
-    // console.log("token in google login is", token);
 
     if (token) {
-      // alert("google login");
       localStorage.setItem("token", token);
       dispatch(setUserToken(token));
 
@@ -24,13 +25,11 @@ function GoogleLogin() {
         const token = localStorage.getItem("token");
 
         const data = await getUserProfile(token);
-        console.log("profile in GoogleLogin is-", data);
         dispatch(setUserProfile(data.data));
         dispatch(setIsLoggedIn(true));
         navigate("/loggedindashboard");
       };
       getProfile();
-      // navigate("/");
     }
   }, []);
   const createGoogleAuthLink = async () => {
@@ -39,11 +38,8 @@ function GoogleLogin() {
         method: "GET",
       });
       const response = await request.json();
-
-      console.log(response);
       window.location.href = response.authUrl;
     } catch (error) {
-      console.log("App.js 12 | error", error);
       throw new Error("Issue with Login", error.message);
     }
   };
@@ -57,7 +53,6 @@ function GoogleLogin() {
       <div>
         {" "}
         <a
-          // className="btn btn-outline-dark"
           role="button"
           style={{ textTransform: "none" }}
           className="linkDiv"
