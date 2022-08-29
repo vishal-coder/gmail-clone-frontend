@@ -3,5 +3,8 @@ export function ValidateEmail(mail) {
   if (mail.match(mailformat)) {
     return true;
   }
+  if (mail.trim() == "") {
+    return true;
+  }
   return false;
 }
