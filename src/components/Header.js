@@ -142,7 +142,7 @@ function Header() {
           sx={{ marginTop: "2rem" }}
           id="demo-positioned-menu"
           aria-labelledby="demo-positioned-button"
-          anchorEl={true}
+          // anchorEl={true}
           open={open}
           onClose={() => setOpen(false)}
           placement="bottom-start"

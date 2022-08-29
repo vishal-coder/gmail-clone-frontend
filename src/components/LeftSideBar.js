@@ -74,7 +74,7 @@ function LeftSideBar() {
               {labelList.map((labelData) => (
                 <div
                   key={labelData.id}
-                  id={labelData.id}
+                  // id={labelData.id}
                   className={`labellistitem ${
                     active == labelData.id && "active"
                   }`}

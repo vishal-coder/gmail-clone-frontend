@@ -137,7 +137,7 @@ function ViewMail() {
       body: replyMailBody,
     };
     const res = replyMailService(token, values);
-    alert("mail forwarded successfully");
+    alert("mail replied successfully");
     setShowReplyOptions(false);
     setReplyMailBody("");
   };
@@ -147,14 +147,15 @@ function ViewMail() {
       <div className="viewmailtoptions">
         <div>
           <Tooltip title="Back">
-            <IconButton aria-label="Back">
-              <ArrowBackIcon
-                onClick={() => {
-                  dispatch(setViewMail(false));
-                  handleRefresh();
-                  navigate(-1, { replace: true });
-                }}
-              />
+            <IconButton
+              aria-label="Back"
+              onClick={() => {
+                dispatch(setViewMail(false));
+                handleRefresh();
+                navigate(-1, { replace: true });
+              }}
+            >
+              <ArrowBackIcon />
             </IconButton>
           </Tooltip>
         </div>
