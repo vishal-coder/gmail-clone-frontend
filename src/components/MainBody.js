@@ -76,14 +76,14 @@ function MainBody() {
           >
             <RefreshOutlinedIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             aria-label="more"
             onClick={() => {
               handleNextPageMails();
             }}
           >
             <MoreVertOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
         <div>
           {/* <p sx={{ display: "block" }}> */}
@@ -92,7 +92,7 @@ function MainBody() {
           <div>of</div>
           <div> {resultSizeEstimate}</div> */}
           {/* </p> */}
-          <IconButton
+          {/* <IconButton
             aria-label="more"
             onClick={() => {
               handleNextPageMails();
@@ -107,7 +107,7 @@ function MainBody() {
             }}
           >
             <ArrowForwardIosOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
       </div>
       <div>
