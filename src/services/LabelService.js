@@ -8,12 +8,10 @@ export const getLabelList = async (token) => {
         Accept: "application/json",
         "x-auth-token": token,
       },
-      // body: JSON.stringify(values),
     }
   );
 
   const data = await response.json();
-  //   const profile = await data;
   return data;
 };
 
@@ -32,6 +30,5 @@ export const updateMailLabels = async (token, values) => {
   );
 
   const data = await response.json();
-  //   const profile = await data;
   return data;
 };

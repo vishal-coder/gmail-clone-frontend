@@ -13,6 +13,5 @@ export const forwardMailService = async (token, values) => {
   );
 
   const data = await response.json();
-  //   const profile = await data;
   return data;
 };

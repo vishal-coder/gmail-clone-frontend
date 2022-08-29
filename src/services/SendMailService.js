@@ -10,6 +10,5 @@ export const sendMailService = async (token, values) => {
   });
 
   const data = await response.json();
-  console.log("response in sendmailservice is", data);
   return data;
 };

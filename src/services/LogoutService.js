@@ -6,7 +6,6 @@ export const logoutUser = async (token, email) => {
       Accept: "application/json",
       "x-auth-token": token,
     },
-    // body: JSON.stringify({ email: email }),
   });
 
   const data = await response.json();

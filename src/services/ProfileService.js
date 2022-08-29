@@ -8,11 +8,9 @@ export const getUserProfile = async (token) => {
         Accept: "application/json",
         "x-auth-token": token,
       },
-      // body: JSON.stringify(values),
     }
   );
 
   const data = await response.json();
-  //   const profile = await data;
   return data;
 };
