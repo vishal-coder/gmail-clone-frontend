@@ -34,9 +34,12 @@ function GoogleLogin() {
   }, []);
   const createGoogleAuthLink = async () => {
     try {
-      const request = await fetch("http://localhost:5000/auth/createAuthLink", {
-        method: "GET",
-      });
+      const request = await fetch(
+        `${process.env.REACT_APP_API}/auth/createAuthLink`,
+        {
+          method: "GET",
+        }
+      );
       const response = await request.json();
       window.location.href = response.authUrl;
     } catch (error) {
