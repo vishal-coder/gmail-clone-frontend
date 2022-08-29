@@ -50,6 +50,17 @@ function Compose() {
       alert("You have entered an invalid email address!");
       return;
     }
+    const validEmailCC = ValidateEmail(mailccRecipient);
+    if (!validEmailCC) {
+      alert("You have entered an invalid Cc email address!");
+      return;
+    }
+
+    const validEmailBCC = ValidateEmail(mailbccRecipient);
+    if (!validEmailBCC) {
+      alert("You have entered an invalid Bcc email address!");
+      return;
+    }
 
     const values = {
       to: mailRecipient,
