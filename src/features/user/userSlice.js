@@ -4,7 +4,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     userInfo: {}, // for user object
-    userToken: null, // for storing the JWT
+    userToken: localStorage.getItem("token") || null, // for storing the JWT
     isLoggedIn: false,
     error: null,
     success: false, // for monitoring the registration process.
