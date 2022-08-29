@@ -21,6 +21,9 @@ import { sendMailService } from "../services/SendMailService";
 function Compose() {
   const dispatch = useDispatch();
   const [mailRecipient, setMailRecipient] = useState("");
+  const [mailccRecipient, setMailccRecipient] = useState("");
+  const [mailbccRecipient, setMailbccRecipient] = useState("");
+
   const [mailSubject, setMailSubject] = useState("");
   const [mailBody, setMailBody] = useState("");
 
@@ -34,10 +37,15 @@ function Compose() {
     setMailBody(event.target.value);
   };
 
+  const handleMailccRecipient = (event) => {
+    setMailccRecipient(event.target.value);
+  };
+
+  const handleMailbccRecipient = (event) => {
+    setMailbccRecipient(event.target.value);
+  };
+
   const handleSendMail = async () => {
-    alert(mailRecipient);
-    alert(mailSubject);
-    alert(mailBody);
     const token = localStorage.getItem("token");
     const validEmail = ValidateEmail(mailRecipient);
     if (!validEmail) {
@@ -47,6 +55,8 @@ function Compose() {
 
     const values = {
       to: mailRecipient,
+      Cc: mailccRecipient || "",
+      Bcc: mailbccRecipient || "",
       subject: mailSubject,
       body: mailBody,
     };
@@ -65,13 +75,8 @@ function Compose() {
       <div className="composeheader">
         <div>New Message</div>
         <div className="composeheaderclosebox">
-          <div>
-            <RemoveOutlinedIcon />{" "}
-          </div>
-          <div>
-            {" "}
-            <HeightOutlinedIcon className="heightaduster" />
-          </div>
+          <div>{/* <RemoveOutlinedIcon />{" "} */}</div>
+          <div> {/* <HeightOutlinedIcon className="heightaduster" /> */}</div>
           <div>
             {" "}
             <CloseOutlinedIcon
@@ -88,9 +93,27 @@ function Compose() {
           name="recepient-el"
           id="recepient"
           className="recepient-newmail"
-          placeholder="recepient"
+          placeholder="To"
           onChange={handleMailRecipient}
           value={mailRecipient}
+        />
+        <input
+          type="email"
+          name="cc-recepient-el"
+          id="cc-recepient"
+          className="recepient-newmail"
+          placeholder="Cc"
+          onChange={handleMailccRecipient}
+          value={mailccRecipient}
+        />
+        <input
+          type="email"
+          name="bcc-recepient-el"
+          id="bcc-recepient"
+          className="recepient-newmail"
+          placeholder="Bcc"
+          onChange={handleMailbccRecipient}
+          value={mailbccRecipient}
         />
         <input
           type="email"
