@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import StarRateIcon from "@mui/icons-material/StarRate";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
+import { updateMailLabels } from "../services/LabelService.js";
 
 function EmailList() {
   const { mailListLoading } = useSelector((state) => state.mails);
@@ -48,6 +49,14 @@ function EmailList() {
   const navigate = useNavigate();
   const viewMailDetails = (id) => {
     dispatch(setViewMail(true));
+    const token = localStorage.getItem("token");
+    const values = {
+      id: id,
+      addLabelIds: null,
+      removeLabelIds: "UNREAD",
+    };
+    updateMailLabels(token, values);
+
     navigate(`/loggedindashboard/viewMail/${id}`);
   };
 
